@@ -1,0 +1,25 @@
+max particles
+duration
+lifetime
+emission
+angle
+speed
+posVarX, posVarY
+gravityX, gravityY
+accelRad
+accelTan
+
+startSize
+endSize
+startSpin
+endSpin
+(startR, startG, startB, startA)
+(endR, endG, endB, endA)
+
+fadeIn
+fadeOut
+frictionP
+frictionS
+frictionR
+respawn
+
