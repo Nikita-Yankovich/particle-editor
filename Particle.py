@@ -1,6 +1,7 @@
 import pygame
 import math
 import pygame.gfxdraw
+import os
 
 class Particle:
     def __init__(self, config):
@@ -52,9 +53,19 @@ class Particle:
         self.is_sprite = config.get('is_sprite', False)
         self.figure = config.get('figure', 'circle')
         if self.is_sprite:
-            try: # Загружаем спрайт с поддержкой прозрачности
-                self.raw_sprite = pygame.image.load(config['sprite_picture']).convert_alpha()
-            except Exception: # Если файл не найден, создаем белую заглушку 10х10
+            try:
+                # 1. Берем папку, в которой лежит файл сохранения json
+                json_dir = config.get('json_dir', '')
+                
+                # 2. Склеиваем путь к JSON-папке с относительным путем к картинке
+                full_sprite_path = os.path.abspath(os.path.join(json_dir, config['sprite_picture']))
+                
+                # 3. Загружаем по железному абсолютному пути
+                self.raw_sprite = pygame.image.load(full_sprite_path).convert_alpha()
+                
+            except Exception as e:
+                print(f"[Particle Error] Ошибка загрузки по итоговому пути {full_sprite_path}: {e}")
+                
                 self.raw_sprite = pygame.Surface((10, 10), pygame.SRCALPHA)
                 self.raw_sprite.fill((255, 255, 255, 255))
 

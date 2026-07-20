@@ -1,7 +1,8 @@
 import pygame
 import sys
-sys.path.insert(0, "..")
+#sys.path.insert(0, "..")
 from Emitter import Emitter
+from SceneManager import SceneManager
 
 pygame.init()
 
@@ -15,6 +16,12 @@ clock = pygame.time.Clock()
 
 emitter = Emitter((400, 400), 0, 1.0, 0, emitter_config)"""
 
+# Scene systen initialization
+scene_manager = SceneManager()
+scene_manager.load_scene("saves/vortex_with_sprites_scene.json") 
+# Создаем один многоразовый промежуточный холст для изоляции blending всей сцены
+scene_surface = pygame.Surface((WIDTH, HEIGHT))
+
 #Cam set
 camPos = pygame.Vector2(0, 0)
 camera_speed = 300
@@ -26,30 +33,22 @@ while play:
     dt = clock.tick(FPS) / 1000.0
 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            play = False
+        if event.type == pygame.QUIT: play = False
 
     # Cam movement
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        camPos.x -= camera_speed * dt
-    if keys[pygame.K_RIGHT]:
-        camPos.x += camera_speed * dt
-    if keys[pygame.K_UP]:
-        camPos.y -= camera_speed * dt
-    if keys[pygame.K_DOWN]:
-        camPos.y += camera_speed * dt
+    if keys[pygame.K_LEFT]: camPos.x -= camera_speed * dt
+    if keys[pygame.K_RIGHT]: camPos.x += camera_speed * dt
+    if keys[pygame.K_UP]: camPos.y -= camera_speed * dt
+    if keys[pygame.K_DOWN]: camPos.y += camera_speed * dt
 
-    # Emmiter update
-    """emitter.update(dt)"""
+    # Scene update
+    scene_manager.update(dt)
 
     # Draw
     window.fill((20, 20, 30))
-    """emitter.draw(window, camPos)
-    emitter_screen_x = int(emitter.pos.x - camPos.x)
-    emitter_screen_y = int(emitter.pos.y - camPos.y)
-    if 0 <= emitter_screen_x <= WIDTH and 0 <= emitter_screen_y <= HEIGHT:
-        pygame.draw.circle(window, (255, 255, 255), (emitter_screen_x, emitter_screen_y), 4)"""
+    scene_manager.draw(scene_surface, camPos)
+    window.blit(scene_surface, (0, 0), special_flags=pygame.BLEND_RGB_ADD)
 
     pygame.display.update()
 
