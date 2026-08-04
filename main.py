@@ -1,7 +1,7 @@
 import pygame
 import sys
-#sys.path.insert(0, "..")
-from Emitter import Emitter
+# sys.path.insert(0, "..")
+# from Emitter import Emitter
 from SceneManager import SceneManager
 
 pygame.init()
@@ -16,13 +16,13 @@ clock = pygame.time.Clock()
 
 emitter = Emitter((400, 400), 0, 1.0, 0, emitter_config)"""
 
-# Scene systen initialization
+# Scene system initialization
 scene_manager = SceneManager()
-scene_manager.load_scene("saves/vortex_with_sprites_scene.json") 
+scene_manager.open_scene("saves/vortex_with_sprites_scene.json")
 # Создаем один многоразовый промежуточный холст для изоляции blending всей сцены
 scene_surface = pygame.Surface((WIDTH, HEIGHT))
 
-#Cam set
+# Cam set
 camPos = pygame.Vector2(0, 0)
 camera_speed = 300
 
@@ -33,6 +33,9 @@ while play:
     dt = clock.tick(FPS) / 1000.0
 
     for event in pygame.event.get():
+        # TODO(UI): красный крестик окна и Alt+F4 должны открывать одно и то же окно подтверждения выхода. Клавиша Esc
+        # в главном меню должна вызывать это же окно. Приложение и открытая сцена закрываются только после
+        # решения пользователя.
         if event.type == pygame.QUIT: play = False
 
     # Cam movement
@@ -53,4 +56,6 @@ while play:
     pygame.display.update()
 
 pygame.quit()
+scene_manager.close_scene()
+""" ^^^ Удалить это когда будет добавлен UI (закрытие не через кнопку будет считаться внештатным)"""
 sys.exit()

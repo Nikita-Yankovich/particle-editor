@@ -3,9 +3,10 @@ import math
 import pygame.gfxdraw
 import os
 
+
 class Particle:
     def __init__(self, config):
-        self.parrent = config['emitter_id']
+        self.parent = config['emitter_id']
         
         # 1. Start Pos
         self.pos = (config['posX'], config['posY'])

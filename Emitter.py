@@ -3,11 +3,12 @@ import random
 import math
 from Particle import Particle
 
+
 class Emitter:
-    def __init__ (self, pos, rotation, scale, emitter_id, config):
+    def __init__(self, pos, rotation, scale, emitter_id, config):
         self.id = emitter_id
 
-        self.config = config # Запоминание config
+        self.config = config  # Запоминание config
         self.particles = []  # Список частиц этого эмиттера
         
         # 1. Emitter: Pos + PosVar, Rotation, Size
@@ -56,7 +57,7 @@ class Emitter:
         self.fadeOut = config['fadeOut']  # Время плавного исчезновения в конце (от 0 до 1)
 
     def update(self, dt):
-        # 1. Emmiter aging
+        # 1. Emitter aging
         self.age += dt
         
         # Если у эмиттера есть конечное время жизни (duration) и оно истекло — перестаём спавнить
